@@ -105,10 +105,3 @@ export default function Home() {
     </div>
   );
 }
-
-console.log("test");
-const x = 1;
-console.log("test");
-eval('console.log("dangerous code")');
-
-debugger;
