@@ -16,6 +16,7 @@ export default function Home() {
         <p>{APP_VERSION}</p>
         <p>feature1</p>
         <p>feature23</p>
+        <p>feature5</p>
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
