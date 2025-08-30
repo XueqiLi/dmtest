@@ -1,0 +1,26 @@
+name: PR to Main
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+jobs:
+  validate-source-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if PR is from dev or hotfix
+        run: |
+          echo "Source branch: ${{ github.head_ref }}"
+          
+          if [[ "${{ github.head_ref }}" == "dev" ]] || [[ "${{ github.head_ref }}" =~ ^hotfix/.* ]]; then
+            echo "✅ Valid: PR from dev or hotfix branch"
+          else
+            echo "❌ ERROR: PRs to main can only come from 'dev' branch or 'hotfix/*' branches"
+            echo "Current source branch: ${{ github.head_ref }}"
+            exit 1
+          fi
+
+  ci:
+    needs: validate-source-branch
+    uses: ./.github/workflows/ci.yml

@@ -1,6 +1,5 @@
 import Image from "next/image";
-import {APP_VERSION} from "@/version";
-
+import { APP_VERSION } from "@/version";
 
 export default function Home() {
   return (
@@ -15,6 +14,9 @@ export default function Home() {
           priority
         />
         <p>{APP_VERSION}</p>
+        <p>feature1</p>
+        <p>feature23</p>
+        <p>feature5</p>
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}

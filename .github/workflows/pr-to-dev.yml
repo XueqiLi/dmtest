@@ -1,0 +1,10 @@
+name: PR to Dev
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [dev]
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml

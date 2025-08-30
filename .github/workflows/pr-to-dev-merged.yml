@@ -1,0 +1,23 @@
+name: PR to Dev Merged
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [dev]
+
+jobs:
+  # First CI run
+  ci-before:
+    if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/ci.yml
+
+  # Version bump
+  version-bump:
+    needs: ci-before
+    if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/version-bump.yml
+
+  # Second CI run after version bump
+  ci-after:
+    needs: version-bump
+    uses: ./.github/workflows/ci.yml
