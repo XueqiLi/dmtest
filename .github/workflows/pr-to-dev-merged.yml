@@ -1,4 +1,4 @@
-name: Feature PR Merged to Dev
+name: PR to Dev Merged
 
 on:
   pull_request:
@@ -8,13 +8,13 @@ on:
 jobs:
   # First CI run
   ci-before:
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'feature/')
+    if: github.event.pull_request.merged == true
     uses: ./.github/workflows/ci.yml
 
   # Version bump
   version-bump:
     needs: ci-before
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'feature/')
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

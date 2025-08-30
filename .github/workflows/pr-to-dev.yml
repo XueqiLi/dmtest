@@ -1,10 +1,10 @@
-name: PR from Feature Branch
+name: PR to Dev
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches: [dev]
 
 jobs:
   ci:
-    if: startsWith(github.head_ref, 'feature/')
     uses: ./.github/workflows/ci.yml
