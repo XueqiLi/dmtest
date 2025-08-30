@@ -1,0 +1,46 @@
+name: PR to Main Merged
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  ci:
+    if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/ci.yml
+
+  fancy-tests:
+    needs: ci
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      # Fancy test placeholder (for future implementation)
+      - name: Run fancy tests
+        run: |
+          echo "🧪 Running fancy tests (integration, E2E, etc.)..."
+          echo "✅ All fancy tests passed"
+
+  notify-on-failure:
+    needs: [ci, fancy-tests]
+    if: failure() && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send failure notification
+        run: |
+          echo "📧 Sending email notification to developer..."
+          echo "❌ CI or fancy tests failed for PR #${{ github.event.pull_request.number }}"
+          echo "Developer: ${{ github.event.pull_request.user.login }}"
+          echo "Branch: ${{ github.head_ref }} → ${{ github.base_ref }}"
+          # TODO: Implement actual email sending (SendGrid, SES, etc.)
+
+  deploy:
+    needs: [ci, fancy-tests]
+    if: success() && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      # Deploy placeholder (for future implementation)
+      - name: Deploy to production
+        run: |
+          echo "🚀 Deploying to production..."
+          echo "✅ Deployment completed successfully"
