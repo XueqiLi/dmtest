@@ -1,0 +1,22 @@
+name: PR to Main Merged
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  ci:
+    if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    needs: ci
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      # Deploy placeholder (for future implementation)
+      - name: Deploy to production
+        run: |
+          echo "🚀 Deploying to production..."
+          echo "✅ Deployment completed successfully"

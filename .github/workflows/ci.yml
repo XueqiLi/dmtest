@@ -1,9 +1,7 @@
 name: CI
 
 on:
-  push:
-  pull_request:
-    branches: [main, dev]
+  workflow_call:
 
 jobs:
   ci:
@@ -28,15 +26,15 @@ jobs:
       - name: Run TypeScript type check
         run: npx tsc --noEmit
 
-      - name: Run tests
-        run: npm test
+      - name: Run tests with coverage
+        run: npm run test:coverage
 
       - name: Build project
         run: npm run build
 
-      - name: Upload test coverage
-        uses: codecov/codecov-action@v4
-        if: success()
-        with:
-          file: ./coverage/lcov.info
-        continue-on-error: true
+      # - name: Upload test coverage
+      #   uses: codecov/codecov-action@v4
+      #   if: success()
+      #   with:
+      #     file: ./coverage/lcov.info
+      #   continue-on-error: true

@@ -1,0 +1,53 @@
+name: PR Branch Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate-pr-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR branch rules
+        run: |
+          echo "Source branch: ${{ github.head_ref }}"
+          echo "Target branch: ${{ github.base_ref }}"
+          
+          # Check if source branch follows naming convention
+          if [[ ! "${{ github.head_ref }}" =~ ^(feature/|hotfix/) ]] && [[ "${{ github.head_ref }}" != "dev" ]]; then
+            echo "❌ ERROR: Source branch must start with 'feature/', 'hotfix/', or be 'dev'"
+            echo "Current source branch: ${{ github.head_ref }}"
+            exit 1
+          fi
+          
+          # Validate feature branch → dev
+          if [[ "${{ github.head_ref }}" =~ ^feature/.* ]]; then
+            if [[ "${{ github.base_ref }}" != "dev" ]]; then
+              echo "❌ ERROR: Feature branches can only merge to 'dev'"
+              echo "Feature branch '${{ github.head_ref }}' trying to merge to '${{ github.base_ref }}'"
+              exit 1
+            fi
+            echo "✅ Valid: Feature branch merging to dev"
+          fi
+          
+          # Validate hotfix branch → main or dev
+          if [[ "${{ github.head_ref }}" =~ ^hotfix/.* ]]; then
+            if [[ "${{ github.base_ref }}" != "main" ]] && [[ "${{ github.base_ref }}" != "dev" ]]; then
+              echo "❌ ERROR: Hotfix branches can only merge to 'main' or 'dev'"
+              echo "Hotfix branch '${{ github.head_ref }}' trying to merge to '${{ github.base_ref }}'"
+              exit 1
+            fi
+            echo "✅ Valid: Hotfix branch merging to ${{ github.base_ref }}"
+          fi
+          
+          # Validate dev branch → main
+          if [[ "${{ github.head_ref }}" == "dev" ]]; then
+            if [[ "${{ github.base_ref }}" != "main" ]]; then
+              echo "❌ ERROR: Dev branch can only merge to 'main'"
+              echo "Dev branch trying to merge to '${{ github.base_ref }}'"
+              exit 1
+            fi
+            echo "✅ Valid: Dev branch merging to main"
+          fi
+          
+          echo "✅ All branch validation rules passed"
