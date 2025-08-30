@@ -107,3 +107,5 @@ export default function Home() {
 }
 
 console.log("test");
+const x = 1;
+console.log("test");
