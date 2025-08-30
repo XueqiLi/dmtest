@@ -5,21 +5,6 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  # Only run if it's a feature branch
-  check-if-feature:
-    runs-on: ubuntu-latest
-    outputs:
-      is-feature: ${{ steps.check.outputs.is-feature }}
-    steps:
-      - id: check
-        run: |
-          if [[ "${{ github.head_ref }}" =~ ^feature/.* ]]; then
-            echo "is-feature=true" >> $GITHUB_OUTPUT
-          else
-            echo "is-feature=false" >> $GITHUB_OUTPUT
-          fi
-
   ci:
-    needs: check-if-feature
-    if: needs.check-if-feature.outputs.is-feature == 'true'
+    if: startsWith(github.head_ref, 'feature/')
     uses: ./.github/workflows/ci.yml
