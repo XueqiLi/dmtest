@@ -1,6 +1,5 @@
 import Image from "next/image";
-import {APP_VERSION} from "@/version";
-
+import { APP_VERSION } from "@/version";
 
 export default function Home() {
   return (
@@ -106,3 +105,5 @@ export default function Home() {
     </div>
   );
 }
+
+console.log("test");
